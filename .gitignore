@@ -1,0 +1,66 @@
+# User-specific files
+.idea/
+.vscode/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer files (installer packages)
+*.exe
+*.dll
+*.pdb
+
+# Windows build output
+[Dd]ebug/
+[Dd]ebugPublic/
+[Dd]Release/
+[Dd]ReleasePublic/
+
+# Windows User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Windows App configuration files
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+appsettings.Local.json
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# .NET Core build artifacts
+bin/
+obj/
+out/
+
+# User-specific files
+.idea/
+.vscode/
+
+# .NET Core global tools
+.dotnet/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Microsoft Visual Studio for Mac
+.vscode/
+
+# Rider
+.idea/
+
+# .NET Core / .NET 5+ generated files
+.vscode/
