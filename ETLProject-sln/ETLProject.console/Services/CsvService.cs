@@ -5,8 +5,8 @@ using ETLProject.console.Models;
 
 namespace ETLProject.console.Services;
 
-//in this moment i understand that there is white spaces in this 18807 line
-public class CsvService
+//at this moment i understand that there is white spaces in this 18807 line
+public class CsvService : ICsvService 
 {
 
     public List<DbTripTransport> ReadCsvFile(string filePath)
@@ -53,7 +53,8 @@ public class CsvService
                 {
                     PickupDatetimeUtc = pickupDatetimeUtc,
                     DropoffDatetimeUtc = dropoffDatetimeUtc,
-                    PassengerCount = string.IsNullOrEmpty(record.passenger_count) ? 0 : int.Parse(record.passenger_count),                    TripDistance = decimal.Parse(record.trip_distance),
+                    PassengerCount = string.IsNullOrEmpty(record.passenger_count) ? 0 : int.Parse(record.passenger_count),              
+                    TripDistance = decimal.Parse(record.trip_distance),
                     StoreAndFwdFlag = string.IsNullOrEmpty(record.store_and_fwd_flag) ? "No" : record.store_and_fwd_flag.ToUpper() == "Y" ? "Yes" : "No",
                     PULocationID = int.Parse(record.PULocationID),
                     DOLocationID = int.Parse(record.DOLocationID),
@@ -62,16 +63,15 @@ public class CsvService
                 };
                 
                 toInsert.Add(dbRecord);
-                count++;
-
-                if (count > 19000)
-                {
-                    return toInsert;
-                }
             }
 
         }
 
         return toInsert;
     }
+}
+
+public interface ICsvService
+{
+    List<DbTripTransport> ReadCsvFile(string filePath);
 }

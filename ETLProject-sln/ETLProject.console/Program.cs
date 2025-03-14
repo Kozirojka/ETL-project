@@ -1,26 +1,23 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Globalization;
-using CsvHelper;
-using CsvHelper.Configuration;
-using ETLProject.console.Models;
+using ETLProject.console.Manager;
 using ETLProject.console.Services;
 
 namespace ETLProject.console;
 
 class Program
 {
-    private const string ConnectionString = @"D:\development\assignmentTest\ETLProject-sln\sample-cab-data.csv";
-
+    private const string PathToFile = @"D:\development\assignmentTest\ETLProject-sln\sample-cab-data.csv";
+    private const string ConnectionString = "Server=localhost\\SQLEXPRESS;Database=taxiDb;Trusted_Connection=True;";
+    
+    
     static void Main(string[] args)
     {
         DbService dbService = new DbService();
         CsvService csvService = new CsvService();
         
-        var list = csvService.ReadCsvFile(ConnectionString);
-        foreach (var VARIABLE in list)
-        {
-            Console.WriteLine(VARIABLE.ToString());
-        }
+        MenuManager menuManager = new MenuManager(dbService, csvService, PathToFile, ConnectionString);
+        
+        menuManager.Run();
     }
 }

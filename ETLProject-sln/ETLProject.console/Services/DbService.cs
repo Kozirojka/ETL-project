@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using ETLProject.console.Models;
 namespace ETLProject.console.Services;
 
-public class DbService
+public class DbService : IDbService
 {
     
     /// function for import data from file to our db
@@ -15,7 +15,21 @@ public class DbService
             using (var bulkCopy = new SqlBulkCopy(connection))
             {
                 bulkCopy.DestinationTableName = "Trips";
-                bulkCopy.WriteToServer(ToDataTable(dbTripTransports));
+
+                bulkCopy.ColumnMappings.Add("PickupDatetime", "PickupDatetime");
+                bulkCopy.ColumnMappings.Add("DropoffDatetime", "DropoffDatetime");
+                bulkCopy.ColumnMappings.Add("PassengerCount", "PassengerCount");
+                bulkCopy.ColumnMappings.Add("TripDistance", "TripDistance");
+                bulkCopy.ColumnMappings.Add("StoreAndFwdFlag", "StoreAndFwdFlag");
+                bulkCopy.ColumnMappings.Add("PULocationID", "PULocationID");
+                bulkCopy.ColumnMappings.Add("DOLocationID", "DOLocationID");
+                bulkCopy.ColumnMappings.Add("FareAmount", "FareAmount");
+                bulkCopy.ColumnMappings.Add("TipAmount", "TipAmount");
+                
+                
+                var table = ToDataTable(dbTripTransports);
+                
+                bulkCopy.WriteToServer(table);
             }
 
             using (var command = new SqlCommand("SELECT COUNT(*) FROM Trips", connection))
@@ -24,11 +38,8 @@ public class DbService
                 Console.WriteLine($"Кількість записів у таблиці Trips: {rowCount}");
             }
         }
-    }
-    
-    
-    
-    private static DataTable ToDataTable(List<DbTripTransport> records)
+    }   
+    public DataTable ToDataTable(List<DbTripTransport> records)
             {
                 var table = new DataTable();
                 table.Columns.Add("PickupDatetime", typeof(DateTime));
@@ -57,4 +68,17 @@ public class DbService
                 }
                 return table;
             }
+
+    public void TruncateTable(string connectionString, string name)
+    {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            using (var command = new SqlCommand($"TRUNCATE TABLE {name}", connection))
+            {
+                command.ExecuteNonQuery();
+                Console.WriteLine("Таблицю Trips успішно очищено за допомогою TRUNCATE.");
+            }
+        }
+    }
 }
