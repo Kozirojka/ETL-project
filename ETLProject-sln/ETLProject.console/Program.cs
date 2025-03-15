@@ -15,8 +15,9 @@ class Program
     {
         DbService dbService = new DbService();
         CsvService csvService = new CsvService();
+        FileService fileService = new FileService();
         
-        MenuManager menuManager = new MenuManager(dbService, csvService, PathToFile, ConnectionString);
+        MenuManager menuManager = new MenuManager(dbService, csvService, fileService, PathToFile, ConnectionString);
         
         menuManager.Run();
     }

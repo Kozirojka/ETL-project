@@ -1,5 +1,6 @@
 using System.Data;
 using System.Data.SqlClient;
+using ETLProject.console.Interfaces;
 using ETLProject.console.Models;
 namespace ETLProject.console.Services;
 
@@ -35,13 +36,16 @@ public class DbService : IDbService
             using (var command = new SqlCommand("SELECT COUNT(*) FROM Trips", connection))
             {
                 var rowCount = (int)command.ExecuteScalar();
-                Console.WriteLine($"Кількість записів у таблиці Trips: {rowCount}");
+                Console.WriteLine($"Count of trips in database is: {rowCount}");
             }
         }
     }   
+    
+    /// This function transform List of DbTripTransport to DataTable object.
     public DataTable ToDataTable(List<DbTripTransport> records)
             {
                 var table = new DataTable();
+                
                 table.Columns.Add("PickupDatetime", typeof(DateTime));
                 table.Columns.Add("DropoffDatetime", typeof(DateTime));
                 table.Columns.Add("PassengerCount", typeof(int));
@@ -71,14 +75,12 @@ public class DbService : IDbService
 
     public void TruncateTable(string connectionString, string name)
     {
-        using (var connection = new SqlConnection(connectionString))
-        {
-            connection.Open();
-            using (var command = new SqlCommand($"TRUNCATE TABLE {name}", connection))
-            {
-                command.ExecuteNonQuery();
-                Console.WriteLine("Таблицю Trips успішно очищено за допомогою TRUNCATE.");
-            }
-        }
+        using var connection = new SqlConnection(connectionString);
+        
+        
+        connection.Open();
+        using var command = new SqlCommand($"TRUNCATE TABLE {name}", connection);
+        command.ExecuteNonQuery();
+        Console.WriteLine("The Trips table has been successfully cleared using TRUNCATE.");
     }
 }

@@ -1,20 +1,24 @@
+using ETLProject.console.Exstention;
+using ETLProject.console.Interfaces;
 using ETLProject.console.Services;
 
 namespace ETLProject.console.Manager;
 
+/// MenuManager for implementation possibility to select option.
 public class MenuManager
 {
     private readonly IDbService _dbService;
     private readonly ICsvService _csvService;
+    private readonly IFileService _fileService;
     private readonly string _pathToFile;
     private readonly string _connectionString;
-
-    public MenuManager(IDbService dbService, ICsvService csvService, string pathToFile, string connectionString)
+    public MenuManager(IDbService dbService, ICsvService csvService, IFileService fileService, string pathToFile, string connectionString)
     {
         _dbService = dbService ?? throw new ArgumentNullException(nameof(dbService));
         _csvService = csvService ?? throw new ArgumentNullException(nameof(csvService));
         _pathToFile = pathToFile ?? throw new ArgumentNullException(nameof(pathToFile));
         _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+        _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
     }
 
     public void Run()
@@ -68,8 +72,28 @@ public class MenuManager
         Console.WriteLine("Loading data from CSV and importing into the database...");
         try
         {
+            
+            //It's extension methods for List<DbTrioTransport> look interesting and great 
+            /*   ╱|、
+                (˚ˎ 。7  
+                |、˜〵          
+                じしˍ,)ノ
+             */
+
             var list = _csvService.ReadCsvFile(_pathToFile);
-            _dbService.ImportDataTodDb(_connectionString, list);
+
+            var duplicateList = list.FindDuplicates();
+            var uniqueList = list.RemoveDuplicates();
+            
+
+            string projectPath = AppDomain.CurrentDomain.BaseDirectory;
+            string filePath = Path.Combine(projectPath, "duplicates.csv");
+
+            _fileService.SaveToCsv(duplicateList, filePath);
+            
+            _dbService.ImportDataTodDb(_connectionString, uniqueList);
+            
+            
             Console.WriteLine("Data successfully imported!");
         }
         catch (Exception ex)
