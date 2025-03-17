@@ -18,5 +18,15 @@ This was an interesting task! I didn’t initially think the task could be anyth
 
     A: In my opinion, the best solution is to divide the file into smaller pieces using parallelization. Of course, this is only can be if the task allows for it.
 
+Edited 17 March: So, I woke up, and remembered my assignmnet. So. This is how I'd Like to improve this code:
+1️⃣ Instead of passing List<DbTripTransport> as a parameter, I should create a Trips class that contains a List<DbTripTransport> field.  
+Then, I would pass an instance of this class as a parameter.  
+This approach aligns better with OOP principles, whereas using List<> in parameters is more of a functional programming style.
+
+It's improve scalability, incupsulation because is mean that developer do not have direct access to field of users, and readbility.
+
+2️⃣ I should have done a small research to analyze time complexity.
+
+Maybe today after University i will make changes and push it to another branch.
 
 
