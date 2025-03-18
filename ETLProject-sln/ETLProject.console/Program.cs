@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using ETLProject.console.Interfaces;
 using ETLProject.console.Manager;
 using ETLProject.console.Services;
 
@@ -13,9 +14,9 @@ class Program
     
     static void Main(string[] args)
     {
-        DbService dbService = new DbService();
-        CsvService csvService = new CsvService();
-        FileService fileService = new FileService();
+        IDbService dbService = new DbService();
+        ICsvService csvService = new CsvService();
+        IFileService fileService = new FileService();
         
         MenuManager menuManager = new MenuManager(dbService, csvService, fileService, PathToFile, ConnectionString);
         
