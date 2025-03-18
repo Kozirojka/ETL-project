@@ -27,6 +27,6 @@ It's improve scalability, incupsulation because is mean that developer do not ha
 
 2️⃣ I should have done a small research to analyze time complexity.
 
-Maybe today after University i will make changes and push it to another branch.
+Maybe later I will make changes and push it to another branch.
 
 
